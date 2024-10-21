@@ -22,6 +22,12 @@ function cmd_download_site() {
     --domains=localhost \
     http://localhost:8080
 
+  cd - 1>&2
+}
+
+function cmd_fix_filenames() {
+  cd target/exported
+
   local _k=""
   find -name '*\?*' | while read _k; do 
     mv "$_k" "$(echo "$_k" | cut -d'?' -f1)" 
@@ -53,6 +59,7 @@ function cmd_fix_localhost() {
 
 function cmd_export() {
   cmd_download_site
+  cmd_fix_filenames
   cmd_download_videos
   cmd_fix_localhost
   cmd_publish
