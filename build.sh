@@ -46,6 +46,11 @@ function cmd_download_videos() {
 function cmd_export() {
   cmd_download_site
   cmd_download_videos
+  cmd_publish
+}
+
+function cmd_publish() {
+  rsync -av --delete target/exported/ docs/
 }
 
 function cmd_run() {
