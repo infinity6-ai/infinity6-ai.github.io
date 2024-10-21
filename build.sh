@@ -50,7 +50,7 @@ function cmd_download_site() {
     --no-parent \
     --span-hosts \
     --domains=localhost \
-    http://localhost:8080
+    http://localhost:8080 || true
 
   cd - 1>&2
 }
