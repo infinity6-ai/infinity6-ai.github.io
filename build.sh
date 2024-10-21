@@ -56,7 +56,7 @@ function cmd_download_site() {
 }
 
 function cmd_fix_filenames() {
-  cd target/exported
+  cd docs
 
   local _k=""
   find -name '*\?*' | while read _k; do 
@@ -89,16 +89,18 @@ function cmd_fix_localhost() {
 
 function cmd_export() {
   cmd_download_site
-  cmd_fix_filenames
   cmd_download_videos
   cmd_fix_localhost
   cmd_publish
 }
 
 function cmd_publish() {
-  rsync -av --delete target/exported/localhost:8080/ docs/
+  [ ! -d docs ] || rm -rf docs
+  rsync -av target/assets/html/ docs/
+  rsync -av target/exported/localhost:8080/ docs/
   rsync -av src/docs/ docs/
   rsync -av target/videos/localhost:8080/ docs/
+  cmd_fix_filenames
 }
 
 function cmd_run() {
