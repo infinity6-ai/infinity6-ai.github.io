@@ -29,6 +29,9 @@ function cmd_download() {
   cd - 1>&2
 }
 
+function cmd_run() {
+  python -m http.server 8000
+}
 
 
 cd "$(dirname "$0")"; _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
