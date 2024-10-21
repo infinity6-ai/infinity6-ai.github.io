@@ -30,7 +30,6 @@ function cmd_download_site() {
 }
 
 function cmd_download_videos() {
-  # http://localhost:8080/wp-content/uploads/2024/10/WhatsApp-Video-2024-10-14-at-19.24.27.mp4
   cd target/exported
   grep -nro '[^;]\+\.mp4\&quot;' . | \
     cut -d':' -f4- | \
