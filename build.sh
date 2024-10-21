@@ -51,6 +51,7 @@ function cmd_export() {
 
 function cmd_publish() {
   rsync -av --delete target/exported/localhost:8080/ docs/
+  rsync -av src/docs/ docs/
 }
 
 function cmd_run() {
