@@ -31,7 +31,15 @@ function cmd_download() {
 
 function cmd_download_videos() {
   # http://localhost:8080/wp-content/uploads/2024/10/WhatsApp-Video-2024-10-14-at-19.24.27.mp4
-  grep -nro '[^;]\+\.mp4\&' target/exported | cut -d':' -f3-
+  cd target/exported
+  grep -nro '[^;]\+\.mp4\&quot;' . | \
+    cut -d':' -f4- | \
+    cut -d'&' -f1 | \
+    sed 's/[\\\/]\+/\//g' | \
+    sed 's/^/http:\/\/localhost:8080/g' | \
+    sort | uniq | \
+    xargs wget --force-directories
+  cd - 1>&2
 }
 
 function cmd_run() {
