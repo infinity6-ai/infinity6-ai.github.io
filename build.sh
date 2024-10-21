@@ -22,8 +22,9 @@ function cmd_download_site() {
     --domains=localhost \
     http://localhost:8080
 
-  find -name '*\?*' | while read k; do 
-    mv "$k" "$(echo "$k" | cut -d'?' -f1)" 
+  local _k=""
+  find -name '*\?*' | while read _k; do 
+    mv "$_k" "$(echo "$_k" | cut -d'?' -f1)" 
   done
 
   cd - 1>&2
@@ -41,6 +42,13 @@ function cmd_download_videos() {
     sort | uniq | \
     xargs wget -c --force-directories
   cd - 1>&2
+}
+
+function cmd_fix_localhost() {
+  local _k=""
+  grep -nro 'http:[/\\]\+localhost:8080' target/exported | cut -d':' -f1,2 | sort | uniq | while read _k; do
+    sed -i 's/http:[\\\/]\+localhost:8080//g' "$_k"
+  done
 }
 
 function cmd_export() {
