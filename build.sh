@@ -9,10 +9,13 @@ function cmd_tunnel() {
 function cmd_download_assets() {
   [ ! -d "target/assets" ] || rm -rf "target/assets"
   mkdir -p target/assets
+  gcloud compute copy-files src/remote/tar.sh wordpress-tmp3:/localdata/remote/tar.sh
+  gcloud compute ssh wordpress-tmp3 -- docker cp /localdata/remote/tar.sh i6site-wordpress-1:/tmp/tar.sh
+  gcloud compute ssh wordpress-tmp3 -- docker exec i6site-wordpress-1 chmod +x /tmp/tar.sh
   cd target/assets
   gcloud compute ssh wordpress-tmp3 -- \
     docker exec -w /var/www -i i6site-wordpress-1 \
-      find html -type f | dos2unix > list.all.txt
+      find html -type f | dos2unix | grep -v '\&' > list.all.txt
   grep '\.css$' list.all.txt >> list.filtered.txt
   grep '\.json$' list.all.txt >> list.filtered.txt
   grep '\.js$' list.all.txt >> list.filtered.txt
@@ -29,10 +32,13 @@ function cmd_download_assets() {
   grep '\.txt$' list.all.txt >> list.filtered.txt
   grep '\.jpeg$' list.all.txt >> list.filtered.txt
   grep '\.mp4$' list.all.txt >> list.filtered.txt
-  # gcloud compute copy-files list.filtered.txt wordpress-tmp3:/tmp/list.filtered.txt
-  # gcloud compute ssh wordpress-tmp3 -- docker cp /tmp/list.filtered.txt i6site-wordpress-1:/tmp/list.filtered.txt
-  cat list.filtered.txt | xargs gcloud compute ssh wordpress-tmp3 -- docker exec -w /var/www -i i6site-wordpress-1 tar czf - > export.assets.tar.gz || true
-  tar xzf export.assets.tar.gz
+  gcloud compute copy-files list.filtered.txt wordpress-tmp3:/localdata/list.filtered.txt
+  gcloud compute ssh wordpress-tmp3 -- docker cp /localdata/list.filtered.txt i6site-wordpress-1:/tmp/list.filtered.txt
+  # cat list.filtered.txt | xargs gcloud compute ssh wordpress-tmp3 -- docker exec -w /var/www -i i6site-wordpress-1 tar czf - > export.assets.tar.gz || true
+  gcloud compute ssh wordpress-tmp3 -- docker exec -w /var/www -i i6site-wordpress-1 /tmp/tar.sh 
+  gcloud compute ssh wordpress-tmp3 -- docker cp i6site-wordpress-1:/tmp/export.tar.gz /localdata/export.tar.gz
+  gcloud compute copy-files wordpress-tmp3:/localdata/export.tar.gz export.tar.gz
+  # tar xzf export.assets.tar.gz
   cd - 1>&2
 }
 
