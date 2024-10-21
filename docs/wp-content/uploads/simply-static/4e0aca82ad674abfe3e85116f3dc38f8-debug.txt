@@ -1,0 +1,6 @@
+[2024-07-30 22:10:21] [class-ss-archive-creation-job.php:83] Starting a job; no job is presently running
+[2024-07-30 22:10:21] [class-ss-archive-creation-job.php:84] Here's our task list: setup, fetch_urls, generate_404, transfer_files_locally, wrapup
+[2024-07-30 22:10:21] [class-ss-archive-creation-job.php:102] Pushing first task to queue: setup
+[2024-07-30 22:33:05] [class-ss-admin-settings.php:656] Received request to cancel static archive generation
+[2024-07-30 22:33:05] [class-ss-archive-creation-job.php:221] Cancelling job; job is not done
+[2024-07-30 22:33:05] [class-ss-archive-creation-job.php:232] The queue isn't empty; overwriting current task with a cancel task
