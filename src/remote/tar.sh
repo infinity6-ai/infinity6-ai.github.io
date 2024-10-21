@@ -6,4 +6,4 @@
 rm -rf /tmp/html/ || true
 rsync -a --files-from=/tmp/list.filtered.txt ./ /tmp/html/
 cd /tmp/html
-tar czf export.tar.gz html
+tar czf /tmp/export.tar.gz html
