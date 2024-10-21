@@ -30,8 +30,10 @@ function cmd_download_site() {
 }
 
 function cmd_download_videos() {
-  cd target/exported
-  grep -nro '[^;]\+\.mp4\&quot;' . | \
+  [ ! -d "target/videos" ] || rm -rf "target/videos"
+  mkdir -p target/videos
+  cd target/videos
+  grep -nro '[^;]\+\.mp4\&quot;' ../exported | \
     cut -d':' -f4- | \
     cut -d'&' -f1 | \
     sed 's/[\\\/]\+/\//g' | \
