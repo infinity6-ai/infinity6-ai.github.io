@@ -50,7 +50,7 @@ function cmd_export() {
 }
 
 function cmd_publish() {
-  rsync -av --delete target/exported/ docs/
+  rsync -av --delete target/exported/localhost:8080/ docs/
 }
 
 function cmd_run() {
