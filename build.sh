@@ -52,14 +52,14 @@ function cmd_export() {
 function cmd_publish() {
   rsync -av --delete target/exported/localhost:8080/ docs/
   rsync -av src/docs/ docs/
+  rsync -av target/videos/localhost:8080/ docs/
 }
 
 function cmd_run() {
+  cd docs
   python -m http.server 8000
+  cd - 1>&2
 }
-
-
-
 
 cd "$(dirname "$0")"; _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
 
