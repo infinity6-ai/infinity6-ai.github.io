@@ -6,7 +6,7 @@ function cmd_tunnel() {
   gcloud compute ssh wordpress-tmp3 -- -L 8080:localhost:80 ping -i 30 localhost
 }
 
-function cmd_download() {
+function cmd_download_site() {
   [ ! -d "target/exported" ] || rm -rf "target/exported"
   mkdir -p target/exported
   cd target/exported
@@ -38,8 +38,13 @@ function cmd_download_videos() {
     sed 's/[\\\/]\+/\//g' | \
     sed 's/^/http:\/\/localhost:8080/g' | \
     sort | uniq | \
-    xargs wget --force-directories
+    xargs wget -c --force-directories
   cd - 1>&2
+}
+
+function cmd_export() {
+  cmd_download_site
+  cmd_download_videos
 }
 
 function cmd_run() {
