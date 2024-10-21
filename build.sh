@@ -29,9 +29,16 @@ function cmd_download() {
   cd - 1>&2
 }
 
+function cmd_download_videos() {
+  # http://localhost:8080/wp-content/uploads/2024/10/WhatsApp-Video-2024-10-14-at-19.24.27.mp4
+  grep -nro '[^;]\+\.mp4\&' target/exported
+}
+
 function cmd_run() {
   python -m http.server 8000
 }
+
+
 
 
 cd "$(dirname "$0")"; _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
