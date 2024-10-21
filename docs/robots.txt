@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
 
-Sitemap: /wp-sitemap.xml
+Sitemap: https://www-staging.infinity6.ai//wp-sitemap.xml
