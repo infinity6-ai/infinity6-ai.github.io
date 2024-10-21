@@ -31,7 +31,7 @@ function cmd_download_assets() {
   grep '\.mp4$' list.all.txt >> list.filtered.txt
   # gcloud compute copy-files list.filtered.txt wordpress-tmp3:/tmp/list.filtered.txt
   # gcloud compute ssh wordpress-tmp3 -- docker cp /tmp/list.filtered.txt i6site-wordpress-1:/tmp/list.filtered.txt
-  cat list.filtered.txt | xargs gcloud compute ssh wordpress-tmp3 -- docker exec -w /var/www -i i6site-wordpress-1 tar czf - > export.assets.tar.gz
+  cat list.filtered.txt | xargs gcloud compute ssh wordpress-tmp3 -- docker exec -w /var/www -i i6site-wordpress-1 tar czf - > export.assets.tar.gz || true
   tar xzf export.assets.tar.gz
   cd - 1>&2
 }
