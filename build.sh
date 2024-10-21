@@ -47,13 +47,14 @@ function cmd_download_videos() {
 function cmd_fix_localhost() {
   local _k=""
   grep -nro 'http:[/\\]\+localhost:8080' target/exported | cut -d':' -f1,2 | sort | uniq | while read _k; do
-    sed -i 's/http:[\\\/]\+localhost:8080/https:\/\/https://www-staging.infinity6.ai\//g' "$_k"
+    sed -i 's/http:[\\\/]\+localhost:8080/https:\/\/www-staging.infinity6.ai\//g' "$_k"
   done
 }
 
 function cmd_export() {
   cmd_download_site
   cmd_download_videos
+  cmd_fix_localhost
   cmd_publish
 }
 
