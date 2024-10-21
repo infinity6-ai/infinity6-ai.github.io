@@ -82,7 +82,7 @@ function cmd_download_videos() {
 
 function cmd_fix_localhost() {
   local _k=""
-  grep -nro 'http:[/\\]\+localhost:8080' target/exported | cut -d':' -f1,2 | sort | uniq | while read _k; do
+  grep -nro 'http:[/\\]\+localhost:8080' docs | cut -d':' -f1,2 | sort | uniq | while read _k; do
     sed -i 's/http:[\\\/]\+localhost:8080/https:\/\/www-staging.infinity6.ai/g' "$_k"
   done
 }
@@ -102,6 +102,7 @@ function cmd_publish() {
   rsync -av src/docs/ docs/
   rsync -av target/videos/localhost:8080/ docs/
   cmd_fix_filenames
+  cmd_fix_localhost
 }
 
 function cmd_run() {
