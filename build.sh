@@ -88,6 +88,7 @@ function cmd_fix_localhost() {
 }
 
 function cmd_export() {
+  cmd_download_assets
   cmd_download_site
   cmd_download_videos
   cmd_fix_localhost
