@@ -6,6 +6,35 @@ function cmd_tunnel() {
   gcloud compute ssh wordpress-tmp3 -- -L 8080:localhost:80 ping -i 30 localhost
 }
 
+function cmd_download_assets() {
+  [ ! -d "target/assets" ] || rm -rf "target/assets"
+  mkdir -p target/assets
+  cd target/assets
+  gcloud compute ssh wordpress-tmp3 -- \
+    docker exec -i i6site-wordpress-1 \
+      find /var/www/html -type f | dos2unix > list.all.txt
+  grep '\.css$' list.all.txt >> list.filtered.txt
+  grep '\.json$' list.all.txt >> list.filtered.txt
+  grep '\.js$' list.all.txt >> list.filtered.txt
+  grep '\.woff$' list.all.txt >> list.filtered.txt
+  grep '\.gif$' list.all.txt >> list.filtered.txt
+  grep '\.png$' list.all.txt >> list.filtered.txt
+  grep '\.svg$' list.all.txt >> list.filtered.txt
+  grep '\.ttf$' list.all.txt >> list.filtered.txt
+  grep '\.html$' list.all.txt >> list.filtered.txt
+  grep '\.scss$' list.all.txt >> list.filtered.txt
+  grep '\.webp$' list.all.txt >> list.filtered.txt
+  grep '\.jpg$' list.all.txt >> list.filtered.txt
+  grep '\.eot$' list.all.txt >> list.filtered.txt
+  grep '\.txt$' list.all.txt >> list.filtered.txt
+  grep '\.jpeg$' list.all.txt >> list.filtered.txt
+  grep '\.mp4$' list.all.txt >> list.filtered.txt
+  # gcloud compute copy-files list.filtered.txt wordpress-tmp3:/tmp/list.filtered.txt
+  # gcloud compute ssh wordpress-tmp3 -- docker cp /tmp/list.filtered.txt i6site-wordpress-1:/tmp/list.filtered.txt
+  cat list.filtered.txt | xargs gcloud compute ssh wordpress-tmp3 -- docker exec -w /var/www/html -i i6site-wordpress-1 tar cvzf - > /tmp/export.assets.tar.gz
+  cd - 1>&2
+}
+
 function cmd_download_site() {
   [ ! -d "target/exported" ] || rm -rf "target/exported"
   mkdir -p target/exported
