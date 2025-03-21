@@ -98,6 +98,7 @@ function cmd_export() {
   cmd_download_site
   cmd_download_videos
   cmd_publish
+  echo "done" 1>&2
 }
 
 function cmd_publish() {
